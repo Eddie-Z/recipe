@@ -4,6 +4,8 @@ const taskList = document.querySelector('.collection');
 const clearBtn = document.querySelector('.clear-tasks');
 const filter = document.querySelector('#filter');
 const taskInput = document.querySelector('#task');
+const repInput = document.querySelector('#reps');
+const setInput = document.querySelector('#sets');
 
 // load all event listeners
 loadEventListeners();
@@ -17,12 +19,16 @@ function loadEventListeners() {
 }
 
 // create list
-function createElements(value) {
+function createElements(value, rep, set) {
   // create li element
   const li = document.createElement('li');
-    
+  const video = document.createElement('iframe');  
+
   li.className = 'collection-item';
-  li.appendChild(document.createTextNode(value));
+  li.appendChild(document.createTextNode(value +" Reps:"+ rep + " Sets:" +set ));
+
+  video.src="https://www.youtube.com/embed/G7A42qFvUdc?controls=0";
+    
 
   // create new link element
   const link = document.createElement('a');
@@ -33,6 +39,7 @@ function createElements(value) {
 
   // append li to ul
   taskList.appendChild(li);
+  taskList.appendChild(video);
 }
 
 
@@ -52,12 +59,11 @@ function getTasks() {
 
 
 function addTask(e) {
-  
   if(taskInput.value === "") {
     alert('Please, add a task');
   }
   else {
-    createElements(taskInput.value);
+    createElements(taskInput.value, repInput.value,setInput.value);
 
     // store in local storage
     storeTaskInLocalStorage(taskInput.value);
