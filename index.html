@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Task List</title>
+  <title>Workout Plan</title>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -15,25 +15,42 @@
       <div class="col s12">
         <div id="main" class="card">
           <div class="card-content">
-            <span class="card-title">Recipe</span>
+            <span class="card-title">Add Exercise</span>
             <div class="row">
               <form id="task-form">
                 <div class="input-field col s12">
                   <input type="text" name="task" id="task">
-                  <label for="task">New Ingredients</label>
+                  <label for="task">Exercise Name</label>
+                </div>
+                <div class="input-field col s12">
+                  <input type="text" name="youtubeURL" id="youtubeURL">
+                  <label for="youtubeURL">Workout Youtube Video</label>
+                </div>
+                <div class="input-field col s6">
+                  <form action="#">                     
+                    <p class="range-field"> Reptition       
+                      <input type="range" id="reps" min="0" max="20" />                     
+                    </p>
+                </div>
+                <div class="input-field col s6">
+                  <form action="#">
+                    <p class="range-field"> Sets
+                      <input type="range" id="sets" min="0" max="10" />
+                    </p>
+                  </form>
                 </div>
                 <input type="submit" value="Add" class="btn">
               </form>
             </div>
           </div>
           <div class="card-action">
-            <h5 id="task-title">Recipe Requirements</h5>
+            <h5 id="task-title">Exercise List</h5>
             <div class="input-field col s12">
               <input type="text" name="filter" id="filter">
-              <label for="filter">FIlter Ingredients</label>
+              <label for="filter">FIlter Exercises</label>
             </div>
             <ul class="collection"></ul>
-            <a href="#" class="clear-tasks btn black">Clear Ingredients</a>
+            <a href="#" class="clear-tasks btn black">Clear All Exercises</a>
           </div>
         </div>
       </div>
