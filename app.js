@@ -6,6 +6,7 @@ const filter = document.querySelector('#filter');
 const taskInput = document.querySelector('#task');
 const repInput = document.querySelector('#reps');
 const setInput = document.querySelector('#sets');
+const youtubeInput = document.querySelector('#youtubeURL')
 
 // load all event listeners
 loadEventListeners();
@@ -19,7 +20,7 @@ function loadEventListeners() {
 }
 
 // create list
-function createElements(value, rep, set) {
+function createElements(value, rep, set, url) {
   // create li element
   const li = document.createElement('li');
   const video = document.createElement('iframe');  
@@ -27,7 +28,9 @@ function createElements(value, rep, set) {
   li.className = 'collection-item';
   li.appendChild(document.createTextNode(value +" Reps:"+ rep + " Sets:" +set ));
 
-  video.src="https://www.youtube.com/embed/G7A42qFvUdc?controls=0";
+  //video.src="https://www.youtube.com/embed/G7A42qFvUdc?controls=0";
+  video.src=createEmbeddedLink(url);
+  
     
 
   // create new link element
@@ -42,6 +45,15 @@ function createElements(value, rep, set) {
   taskList.appendChild(video);
 }
 
+function createEmbeddedLink(link){
+  let str = link;
+  var pos = str.indexOf("watch?v=");
+  var beginLink = str.slice(0,pos);
+  var endLink = str.slice(pos+8,str.length);
+  var embededLink=beginLink+"embed/"+endLink+"?controls=0";
+  return embededLink;
+  
+}
 
 function getTasks() {
   let tasks;
@@ -63,7 +75,7 @@ function addTask(e) {
     alert('Please, add a task');
   }
   else {
-    createElements(taskInput.value, repInput.value,setInput.value);
+    createElements(taskInput.value, repInput.value,setInput.value,youtubeInput.value);
 
     // store in local storage
     storeTaskInLocalStorage(taskInput.value);
