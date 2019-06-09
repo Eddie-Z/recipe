@@ -1,3 +1,18 @@
+ // Your web app's Firebase configuration
+ var firebaseConfig = {
+  apiKey: "AIzaSyDWhTdGr6jLMQWC97iFTzEpXQme-W1nr8s",
+  authDomain: "gymproject-b7d58.firebaseapp.com",
+  databaseURL: "https://gymproject-b7d58.firebaseio.com",
+  projectId: "gymproject-b7d58",
+  storageBucket: "gymproject-b7d58.appspot.com",
+  messagingSenderId: "752621493770",
+  appId: "1:752621493770:web:93c76b5c36ae74c6"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+var messagesRef = firebase.database().ref('message');
+
+
 // define UI variables
 const form = document.querySelector('#task-form');
 const taskList = document.querySelector('.collection');
@@ -76,6 +91,7 @@ function addTask(e) {
   }
   else {
     createElements(taskInput.value, repInput.value,setInput.value,youtubeInput.value);
+    saveMessage(taskInput.value, repInput.value,setInput.value,youtubeInput.value);
 
     // store in local storage
     storeTaskInLocalStorage(taskInput.value);
@@ -164,5 +180,16 @@ function filterTasks(e) {
     else {
       task.style.display = 'none';
     }
+  });
+}
+
+//function
+function saveMessage(value, rep, set, url){
+  var newMessageRef=messagesRef.push();
+  newMessageRef.set({
+    value:value,
+    rep:rep,
+    set:set,
+    url:url
   });
 }
