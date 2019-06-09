@@ -12,7 +12,6 @@
 firebase.initializeApp(firebaseConfig);
 var messagesRef = firebase.database().ref('message');
 
-
 // define UI variables
 const form = document.querySelector('#task-form');
 const taskList = document.querySelector('.collection');
@@ -34,31 +33,6 @@ function loadEventListeners() {
   filter.addEventListener('keyup', filterTasks);
 }
 
-// create list
-function createElements(value, rep, set, url) {
-  // create li element
-  const li = document.createElement('li');
-  const video = document.createElement('iframe');  
-
-  li.className = 'collection-item';
-  li.appendChild(document.createTextNode(value +" Reps:"+ rep + " Sets:" +set ));
-
-  //video.src="https://www.youtube.com/embed/G7A42qFvUdc?controls=0";
-  video.src=createEmbeddedLink(url);
-  
-    
-
-  // create new link element
-  const link = document.createElement('a');
-  link.className = 'delete-item secondary-content';
-  link.innerHTML = '<i class="fa fa-remove"></i>';
-  
-  li.appendChild(link);
-
-  // append li to ul
-  taskList.appendChild(li);
-  taskList.appendChild(video);
-}
 
 function createEmbeddedLink(link){
   let str = link;
@@ -70,21 +44,6 @@ function createEmbeddedLink(link){
   
 }
 
-function getTasks() {
-  let tasks;
-
-  if(localStorage.getItem('tasks') === null) {
-    tasks = [];
-  }
-  else {
-    tasks = JSON.parse(localStorage.getItem('tasks'));
-  }
-  tasks.forEach(function(task) {
-    createElements(task);
-  });
-}
-
-
 function addTask(e) {
   if(taskInput.value === "") {
     alert('Please, add a task');
@@ -92,9 +51,6 @@ function addTask(e) {
   else {
     createElements(taskInput.value, repInput.value,setInput.value,youtubeInput.value);
     saveMessage(taskInput.value, repInput.value,setInput.value,youtubeInput.value);
-
-    // store in local storage
-    storeTaskInLocalStorage(taskInput.value);
     
     // clear the input
     taskInput.value = "";
@@ -102,19 +58,19 @@ function addTask(e) {
   e.preventDefault();
 }
 
-function storeTaskInLocalStorage(task) {
-  let tasks;
+// function storeTaskInLocalStorage(task) {
+//   let tasks;
 
-  if(localStorage.getItem('tasks') === null) {
-    tasks = [];
-  }
-  else {
-    tasks = JSON.parse(localStorage.getItem('tasks'));
-  }
+//   if(localStorage.getItem('tasks') === null) {
+//     tasks = [];
+//   }
+//   else {
+//     tasks = JSON.parse(localStorage.getItem('tasks'));
+//   }
 
-  tasks.push(task);
-  localStorage.setItem('tasks', JSON.stringify(tasks));
-}
+//   tasks.push(task);
+//   localStorage.setItem('tasks', JSON.stringify(tasks));
+// }
 
 function removeTask(e) {
 
@@ -192,4 +148,47 @@ function saveMessage(value, rep, set, url){
     set:set,
     url:url
   });
+}
+
+
+function getTasks() {
+    //retrieve data from firebase
+    messagesRef.on("child_added",snap => 
+    {
+      //create elements
+      //createElements(task);
+      var value = snap.child("value").val();
+      var url = snap.child("url").val();
+      var set = snap.child("set").val();
+      var rep = snap.child("rep").val();
+      createElements(value,rep,set,url);
+      console.log(snap.val());
+    });
+  
+}
+
+// create list
+function createElements(value, rep, set, url) {
+  // create li element
+  const li = document.createElement('li');
+  const video = document.createElement('iframe');  
+
+  li.className = 'collection-item';
+  li.appendChild(document.createTextNode(value +" Reps:"+ rep + " Sets:" +set ));
+
+  //video.src="https://www.youtube.com/embed/G7A42qFvUdc?controls=0";
+  video.src=createEmbeddedLink(url);
+  
+    
+
+  // create new link element
+  const link = document.createElement('a');
+  link.className = 'delete-item secondary-content';
+  link.innerHTML = '<i class="fa fa-remove"></i>';
+  
+  li.appendChild(link);
+
+  // append li to ul
+  taskList.appendChild(li);
+  taskList.appendChild(video);
 }
