@@ -40,7 +40,6 @@ function addTask(e) {
     alert('Please, add a task');
   }
   else {
-    createElements(taskInput.value, repInput.value,setInput.value,youtubeInput.value);
     saveMessage(taskInput.value, repInput.value,setInput.value,youtubeInput.value);
     
     // clear the input
@@ -155,10 +154,10 @@ function createElements(value, rep, set, url) {
   link.innerHTML = '<i class="fa fa-remove"></i>';
   
   li.appendChild(link);
-
+  li.appendChild(video);
   // append li to ul
   taskList.appendChild(li);
-  taskList.appendChild(video);
+  
 }
 
 function createEmbeddedLink(link){
