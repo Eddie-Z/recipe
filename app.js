@@ -33,17 +33,6 @@ function loadEventListeners() {
   filter.addEventListener('keyup', filterTasks);
 }
 
-
-function createEmbeddedLink(link){
-  let str = link;
-  var pos = str.indexOf("watch?v=");
-  var beginLink = str.slice(0,pos);
-  var endLink = str.slice(pos+8,str.length);
-  var embededLink=beginLink+"embed/"+endLink+"?controls=0";
-  return embededLink;
-  
-}
-
 function addTask(e) {
   if(taskInput.value === "") {
     alert('Please, add a task');
@@ -57,20 +46,6 @@ function addTask(e) {
   }  
   e.preventDefault();
 }
-
-// function storeTaskInLocalStorage(task) {
-//   let tasks;
-
-//   if(localStorage.getItem('tasks') === null) {
-//     tasks = [];
-//   }
-//   else {
-//     tasks = JSON.parse(localStorage.getItem('tasks'));
-//   }
-
-//   tasks.push(task);
-//   localStorage.setItem('tasks', JSON.stringify(tasks));
-// }
 
 function removeTask(e) {
 
@@ -121,25 +96,25 @@ function clearTasks() {
 }
 
 function clearTasksFromLocalStorage() {
-  localStorage.clear();
+  messagesRef.set(null);
 }
 
-function filterTasks(e) {
-  const text = e.target.value.toLowerCase();
+// function filterTasks(e) {
+//   const text = e.target.value.toLowerCase();
   
-  document.querySelectorAll('.collection-item').forEach(function(task) {
-    const item = task.firstChild.textContent;
+//   document.querySelectorAll('.collection-item').forEach(function(task) {
+//     const item = task.firstChild.textContent;
 
-    if(item.toLowerCase().indexOf(text) != -1) {
-      task.style.display = 'block';
-    }
-    else {
-      task.style.display = 'none';
-    }
-  });
-}
+//     if(item.toLowerCase().indexOf(text) != -1) {
+//       task.style.display = 'block';
+//     }
+//     else {
+//       task.style.display = 'none';
+//     }
+//   });
+// }
 
-//function
+//save into firebase
 function saveMessage(value, rep, set, url){
   var newMessageRef=messagesRef.push();
   newMessageRef.set({
@@ -150,13 +125,12 @@ function saveMessage(value, rep, set, url){
   });
 }
 
-
+//retrieve data from firebase
 function getTasks() {
-    //retrieve data from firebase
+
     messagesRef.on("child_added",snap => 
     {
       //create elements
-      //createElements(task);
       var value = snap.child("value").val();
       var url = snap.child("url").val();
       var set = snap.child("set").val();
@@ -179,7 +153,6 @@ function createElements(value, rep, set, url) {
   //video.src="https://www.youtube.com/embed/G7A42qFvUdc?controls=0";
   video.src=createEmbeddedLink(url);
   
-    
 
   // create new link element
   const link = document.createElement('a');
@@ -192,3 +165,13 @@ function createElements(value, rep, set, url) {
   taskList.appendChild(li);
   taskList.appendChild(video);
 }
+
+function createEmbeddedLink(link){
+  let str = link;
+  var pos = str.indexOf("watch?v=");
+  var beginLink = str.slice(0,pos);
+  var endLink = str.slice(pos+8,str.length);
+  var embededLink=beginLink+"embed/"+endLink+"?controls=0";
+  return embededLink; 
+}
+
