@@ -12,6 +12,8 @@
 firebase.initializeApp(firebaseConfig);
 var messagesRef = firebase.database().ref('message');
 
+
+
 // define UI variables
 const form = document.querySelector('#task-form');
 const taskList = document.querySelector('.collection');
@@ -56,28 +58,21 @@ function removeTask(e) {
       element.remove();
 
       // remove from local storage
-      removeTaskFromLocalStorage(element);
+      removeTaskFromLocalStorage(element.innerText);
     }
   }
 }
 
+//removing 
 function removeTaskFromLocalStorage(taskItem) {
-  let tasks;
-
-  if(localStorage.getItem('tasks') === null) {
-    tasks = [];
-  }
-  else {
-    tasks = JSON.parse(localStorage.getItem('tasks'));
-  }
-
-  tasks.forEach(function(task, index) {
-    if(taskItem.textContent === task) {
-      tasks.splice(index, 1);
-    }
-  });
-
-  localStorage.setItem('tasks', JSON.stringify(tasks));
+  var value=taskItem.indexOf(" ");
+  var valueString=taskItem.slice(0,value);
+  messagesRef.orderByChild('value').equalTo(valueString).once("value").then(function(snapshot) {
+  snapshot.forEach(function(child) {
+    child.ref.remove();
+    console.log("Removed!");
+  })
+});
 }
 
 function clearTasks() {
