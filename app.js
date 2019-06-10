@@ -154,6 +154,8 @@ function createElements(value, rep, set, url) {
   link.innerHTML = '<i class="fa fa-remove"></i>';
   
   li.appendChild(link);
+  linebreak = document.createElement("br");
+  li.appendChild(linebreak);
   li.appendChild(video);
   // append li to ul
   taskList.appendChild(li);
